@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build OpenWrt Firmware - X86
+name: Build OpenWrt Firmware - newifi-d2
 
 # Controls when the workflow will run
 on:
@@ -11,7 +11,7 @@ on:
       config:
         description: 'Input config script file name without ".sh". "all" to build all the configs.'
         required: true
-        default: configs/x86-*.sh
+        default: configs/newifi-d2-*.sh
       txt:
         description: Release note txt file name.
         required: true
@@ -20,7 +20,7 @@ on:
     - cron: '0 21 * * 5'
 
 env:
-  TZ: 'Asia/Shanghai'
+  TZ: 'Asia/Ho_Chi_Minh'
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
       - name: Set ENV
         if: github.event.schedule=='0 21 * * 5'
         run: |
-          echo "CONFIG=configs/x86-*.sh" >> $GITHUB_ENV
+          echo "CONFIG=configs/newifi-d2-*.sh" >> $GITHUB_ENV
           echo "TXT=release_note_docker.txt" >> $GITHUB_ENV
 
       - name: Checkout
@@ -62,8 +62,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: firmware-openwrt-x86_${{ env.PACKAGED_OUTPUTDATE }}
+          tag_name: openwrt-newifi-d2_${{ env.PACKAGED_OUTPUTDATE }}
           files: |
-            ${{ github.workspace }}/bin/*.img.gz
+            ${{ github.workspace }}/bin/*.bin
           body_path: ${{ github.workspace }}/configs/${{ env.TXT }}
           fail_on_unmatched_files: true
